@@ -6,7 +6,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import lombok.Data;
 @Entity
+@Data
+
 public class Permission {
     @Id @GeneratedValue
     private Long id;
@@ -18,17 +21,5 @@ public class Permission {
     private Set<Role> roles;
     
     
-    // Getters & Setters
-	public String getNom() {
-		return nom;
-	}
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   
 }
