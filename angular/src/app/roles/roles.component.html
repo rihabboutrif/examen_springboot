@@ -1,0 +1,51 @@
+<div class="card mt-4 shadow-sm">
+  <div class="card-header">
+    <h5>Gestion des rôles</h5>
+  </div>
+  <div class="card-body">
+    <!-- Formulaire pour créer ou modifier un rôle -->
+    <form (ngSubmit)="saveRole()" class="mb-3">
+      <div class="mb-2">
+        <input type="text" class="form-control" placeholder="Nom du rôle" [(ngModel)]="newRole.name" name="name" required />
+      </div>
+      <div class="mb-2">
+        <textarea class="form-control" placeholder="Description" [(ngModel)]="newRole.description" name="description"></textarea>
+      </div>
+      <button class="btn btn-primary me-2" type="submit">{{ isEditing ? 'Modifier' : 'Créer' }}</button>
+      <button class="btn btn-secondary" type="button" (click)="resetForm()" *ngIf="isEditing">Annuler</button>
+    </form>
+
+    <!-- Tableau des rôles -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of roles">
+          <td>{{ role.id }}</td>
+          <td>{{ role.name }}</td>
+          <td>{{ role.description }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1" (click)="editRole(role)">Modifier</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteRole(role.id)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <mat-paginator
+      [length]="totalRoles"
+      [pageSize]="pageSize"
+      [pageIndex]="currentPage"
+      (page)="onPageChange($event)"
+      aria-label="Pagination des rôles"
+    >
+    </mat-paginator>
+  </div>
+</div>

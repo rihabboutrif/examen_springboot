@@ -1,0 +1,77 @@
+<div class="card mt-4 shadow-sm">
+  <div class="card-header">
+    <h5>Gestion des utilisateurs</h5>
+  </div>
+  <div class="card-body">
+    <form (ngSubmit)="submit()" [formGroup]="userForm" class="mb-3">
+      <div class="mb-2">
+        <input type="text" class="form-control" formControlName="username" placeholder="Nom d'utilisateur" required />
+      </div>
+      <div class="mb-2">
+        <input type="email" class="form-control" formControlName="email" placeholder="Email" required />
+      </div>
+
+      <div class="mb-2">
+        <label><strong>Rôles</strong></label>
+        <div *ngFor="let role of rolesDisponibles">
+          <input
+            type="checkbox"
+            [checked]="isRoleChecked(role)"
+            (change)="onRoleCheckboxChange($event, role)" />
+          {{ role.name }}
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label><strong>Permissions</strong></label>
+        <div *ngFor="let perm of permissionsDisponibles">
+          <input
+            type="checkbox"
+            [checked]="isPermissionChecked(perm)"
+            (change)="onPermissionCheckboxChange($event, perm)" />
+          {{ perm.name }}
+        </div>
+      </div>
+
+      <button class="btn btn-primary me-2" type="submit">{{ editingUserId ? 'Modifier' : 'Créer' }}</button>
+      <button class="btn btn-secondary" type="button" (click)="resetForm()" *ngIf="editingUserId">Annuler</button>
+    </form>
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Rôles</th>
+          <th>Permissions</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span *ngFor="let role of user.roles" class="badge bg-info me-1">{{ role.name }}</span>
+          </td>
+          <td>
+            <span *ngFor="let perm of user.permissions" class="badge bg-secondary me-1">{{ perm.name }}</span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1" (click)="editUser(user)">Modifier</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <mat-paginator
+      [length]="totalUsers"
+      [pageSize]="pageSize"
+      [pageIndex]="currentPage"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+</div>

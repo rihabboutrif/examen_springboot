@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,4 +38,14 @@ public class UserController {
     public User setActif(@PathVariable Long id, @RequestParam boolean actif) {
         return userService.setActifStatus(id, actif);
     }
+    @PutMapping("/{id}")
+public User update(@PathVariable Long id, @RequestBody User user) {
+    return userService.updateUser(id, user);
+}
+
+@DeleteMapping("/{id}")
+public void delete(@PathVariable Long id) {
+    userService.deleteUser(id);
+}
+
 }
