@@ -15,15 +15,23 @@ import org.springframework.stereotype.Service;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired private UserRepository userRepository;
+@PostConstruct
+public void init() {
+    System.out.println("UserDetailsServiceImpl initialisé ✅");
+}
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    
+    System.out.println("Email trouvé : " + user.getEmail());
+System.out.println("Mot de passe (hashé) : " + user.getMotDePasse());
+
         Set<GrantedAuthority> authorities = new HashSet<>();
     
         if (user.getRole() != null && user.getRole().getPermissions() != null) {
@@ -32,11 +40,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     .collect(Collectors.toSet());
         }
     
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getMotDePasse(),
-                authorities
-        );
+        return new MyUserDetails(user, authorities);
+
     }
     
 }

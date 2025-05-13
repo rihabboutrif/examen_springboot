@@ -5,6 +5,5 @@ export interface History {
     user: User;
     action: string;
     timestamp: Date;
-    details: string;
   }
   

@@ -22,12 +22,21 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        user.setMotDePasse(new BCryptPasswordEncoder().encode(user.getMotDePasse()));
-        user.setActif(true);
-        User savedUser = userRepository.save(user);
-        logService.log(savedUser, "Création d'un utilisateur");
-        return savedUser;
+    if (user.getMotDePasse() == null || user.getMotDePasse().isEmpty()) {
+        throw new IllegalArgumentException("Le mot de passe ne peut pas être vide");
     }
+
+    // Encoder le mot de passe
+    user.setMotDePasse(new BCryptPasswordEncoder().encode(user.getMotDePasse()));
+
+    user.setActif(true);
+    User savedUser = userRepository.save(user);
+
+    logService.log(savedUser, "Création d'un utilisateur");
+
+    return savedUser;
+}
+
 
     public User setActifStatus(Long userId, boolean actif) {
         User user = userRepository.findById(userId)

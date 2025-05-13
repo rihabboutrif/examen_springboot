@@ -16,4 +16,14 @@ export class HistoriqueService {
   getAll(): Observable<History[]> {
     return this.http.get<History[]>(this.apiUrl);
   }
+
+  getMyActions() {
+  return this.http.get<any[]>('http://localhost:8081/api/historique/me');
+}
+
+getLast7Days() {
+  return this.http.get<{ day: string; count: number }[]>('http://localhost:8081/api/historique/last-7-days');
+}
+
+
 }

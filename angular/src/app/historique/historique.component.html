@@ -7,17 +7,15 @@
         <th>Utilisateur</th>
         <th>Action</th>
         <th>Date</th>
-                <th>Details</th>
 
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let h of historiques; let i = index">
         <td>{{ i + 1 }}</td>
-        <td>{{ h.user.username }}</td>
+        <td>{{ h.utilisateur.nom}}</td>
         <td>{{ h.action }}</td>
-        <td>{{ h.timestamp | date: 'short' }}</td>
-                <td>{{ h.details }}</td>
+        <td>{{ h.date | date: 'short' }}</td>
 
       </tr>
     </tbody>

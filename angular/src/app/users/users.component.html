@@ -3,7 +3,7 @@
     <h5>Gestion des utilisateurs</h5>
   </div>
   <div class="card-body">
-    <form (ngSubmit)="submit()" [formGroup]="userForm" class="mb-3">
+    <form *ngIf="hasPermission('CREATE USER')"  (ngSubmit)="submit()" [formGroup]="userForm" class="mb-3">
       <div class="mb-2">
         <input type="text" class="form-control" formControlName="username" placeholder="Nom d'utilisateur" required />
       </div>
@@ -18,7 +18,7 @@
             type="checkbox"
             [checked]="isRoleChecked(role)"
             (change)="onRoleCheckboxChange($event, role)" />
-          {{ role.name }}
+          {{ role.nom }}
         </div>
       </div>
 
@@ -29,7 +29,7 @@
             type="checkbox"
             [checked]="isPermissionChecked(perm)"
             (change)="onPermissionCheckboxChange($event, perm)" />
-          {{ perm.name }}
+          {{ perm.nom }}
         </div>
       </div>
 
@@ -51,17 +51,17 @@
       <tbody>
         <tr *ngFor="let user of users">
           <td>{{ user.id }}</td>
-          <td>{{ user.username }}</td>
+          <td>{{ user.nom }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <span *ngFor="let role of user.roles" class="badge bg-info me-1">{{ role.name }}</span>
+            {{ user.role.nom }}
           </td>
           <td>
-            <span *ngFor="let perm of user.permissions" class="badge bg-secondary me-1">{{ perm.name }}</span>
+            <span *ngFor="let perm of user.role?.permissions" class="badge bg-secondary me-1">{{ perm.nom }}</span>
           </td>
           <td>
-            <button class="btn btn-sm btn-outline-primary me-1" (click)="editUser(user)">Modifier</button>
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">Supprimer</button>
+            <button *ngIf="hasPermission('UPDATE USER')"  class="btn btn-sm btn-outline-primary me-1" (click)="editUser(user)">Modifier</button>
+            <button *ngIf="hasPermission('DELETE USER')"  class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">Supprimer</button>
           </td>
         </tr>
       </tbody>

@@ -3,9 +3,9 @@
     <h5>Gestion des permissions</h5>
   </div>
   <div class="card-body">
-    <form (ngSubmit)="savePermission()" class="mb-3">
+    <form *ngIf="hasPermission('CREATE PERMISSION')" (ngSubmit)="savePermission()" class="mb-3">
       <div class="mb-2">
-        <input type="text" class="form-control" placeholder="Nom" [(ngModel)]="newPermission.name" name="name" required>
+        <input type="text" class="form-control" placeholder="Nom" [(ngModel)]="newPermission.nom" name="name" required>
       </div>
       <div class="mb-2">
         <textarea class="form-control" placeholder="Description" [(ngModel)]="newPermission.description" name="description"></textarea>
@@ -26,11 +26,11 @@
       <tbody>
         <tr *ngFor="let permission of permissions">
           <td>{{ permission.id }}</td>
-          <td>{{ permission.name }}</td>
+          <td>{{ permission.nom }}</td>
           <td>{{ permission.description }}</td>
           <td>
-            <button class="btn btn-sm btn-outline-primary me-1" (click)="editPermission(permission)">Modifier</button>
-            <button class="btn btn-sm btn-outline-danger" (click)="deletePermission(permission.id)">Supprimer</button>
+            <button *ngIf="hasPermission('UPDATE PERMISSION')" class="btn btn-sm btn-outline-primary me-1" (click)="editPermission(permission)">Modifier</button>
+            <button *ngIf="hasPermission('DELETE PERMISSION')" class="btn btn-sm btn-outline-danger" (click)="deletePermission(permission.id)">Supprimer</button>
           </td>
         </tr>
       </tbody>

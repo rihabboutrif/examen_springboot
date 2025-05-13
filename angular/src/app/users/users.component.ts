@@ -9,6 +9,7 @@ import { RoleService } from '../services/role.service';
 import { PermissionService } from '../services/permission.service';
 import { NgFor, NgIf } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -39,6 +40,7 @@ export class UsersComponent implements OnInit {
     private userService: UserService,
     private roleService: RoleService,
     private permissionService: PermissionService,
+    private authService: AuthService,
     private fb: FormBuilder
   ) {
     this.userForm = this.fb.group({
@@ -49,6 +51,10 @@ export class UsersComponent implements OnInit {
     });
   }
 
+
+  hasPermission(permission: string): boolean {
+  return this.authService.hasPermission(permission);
+}
   ngOnInit(): void {
     this.loadUsers();
     this.loadRoles();
@@ -56,9 +62,9 @@ export class UsersComponent implements OnInit {
   }
 
   loadUsers(): void {
-    this.userService.getAll().subscribe(data => {
-      this.users = data;
-      this.totalUsers = data.length;
+    this.userService.getAllPaginated(this.currentPage, this.pageSize).subscribe((response) => {
+      this.users = response.content;
+      this.totalUsers = response.totalElements;
     });
   }
 
@@ -92,9 +98,9 @@ export class UsersComponent implements OnInit {
   editUser(user: User): void {
     this.editingUserId = user.id;
     this.userForm.patchValue({
-      username: user.username,
+      username: user.nom,
       email: user.email,
-      roles: user.roles,
+      roles: user.role,
       permissions: user.permissions
     });
   }

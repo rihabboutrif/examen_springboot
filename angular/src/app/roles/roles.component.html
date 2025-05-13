@@ -4,9 +4,9 @@
   </div>
   <div class="card-body">
     <!-- Formulaire pour créer ou modifier un rôle -->
-    <form (ngSubmit)="saveRole()" class="mb-3">
+    <form *ngIf="hasPermission('CREATE ROLE')" (ngSubmit)="saveRole()" class="mb-3">
       <div class="mb-2">
-        <input type="text" class="form-control" placeholder="Nom du rôle" [(ngModel)]="newRole.name" name="name" required />
+        <input type="text" class="form-control" placeholder="Nom du rôle" [(ngModel)]="newRole.nom" name="name" required />
       </div>
       <div class="mb-2">
         <textarea class="form-control" placeholder="Description" [(ngModel)]="newRole.description" name="description"></textarea>
@@ -28,11 +28,11 @@
       <tbody>
         <tr *ngFor="let role of roles">
           <td>{{ role.id }}</td>
-          <td>{{ role.name }}</td>
+          <td>{{ role.nom }}</td>
           <td>{{ role.description }}</td>
           <td>
-            <button class="btn btn-sm btn-outline-primary me-1" (click)="editRole(role)">Modifier</button>
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteRole(role.id)">Supprimer</button>
+            <button *ngIf="hasPermission('UPDATE ROLE')"  class="btn btn-sm btn-outline-primary me-1" (click)="editRole(role)">Modifier</button>
+            <button  *ngIf="hasPermission('DELETE ROLE')" class="btn btn-sm btn-outline-danger" (click)="deleteRole(role.id)">Supprimer</button>
           </td>
         </tr>
       </tbody>

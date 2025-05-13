@@ -6,6 +6,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';  // Import du 
 import { CommonModule } from '@angular/common';  // Import de CommonModule (nécessaire pour les directives comme *ngFor)
 import { MatTableModule } from '@angular/material/table';  // Si tu utilises également MatTable
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-role',
@@ -15,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class RoleComponent implements OnInit {
   roles: Role[] = [];
-  newRole: Role = { id: 0, name: '', description: '', permissions: [] };
+  newRole: Role = { id: 0, nom: '', description: '', permissions: [] };
   isEditing: boolean = false;
 
   // Pagination
@@ -23,12 +24,18 @@ export class RoleComponent implements OnInit {
   currentPage: number = 0;
   totalRoles: number = 0;
 
-  constructor(private roleService: RoleService) {}
+  constructor(private roleService: RoleService,private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadRoles();
   }
 
+
+  
+
+  hasPermission(permission: string): boolean {
+  return this.authService.hasPermission(permission);
+}
   loadRoles(): void {
     this.roleService.getAllPaginated(this.currentPage, this.pageSize).subscribe((response) => {
       this.roles = response.content;
@@ -62,7 +69,7 @@ export class RoleComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.newRole = { id: 0, name: '', description: '', permissions: [] };
+    this.newRole = { id: 0, nom: '', description: '', permissions: [] };
     this.isEditing = false;
   }
 

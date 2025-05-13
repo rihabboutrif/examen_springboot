@@ -4,6 +4,7 @@ import { Permission } from '../models/permission.model';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-permissions',
@@ -13,19 +14,23 @@ import { CommonModule } from '@angular/common';
 })
 export class PermissionsComponent implements OnInit {
   permissions: Permission[] = [];
-  newPermission: Permission = { id: 0, name: '', description: '' };
+  newPermission: Permission = { id: 0, nom: '', description: '' };
   isEditing = false;
 
   totalPermissions = 0;
   pageSize = 5;
   currentPage = 0;
 
-  constructor(private permissionService: PermissionService) {}
+  constructor(private permissionService: PermissionService,private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadPermissions();
   }
 
+
+  hasPermission(permission: string): boolean {
+  return this.authService.hasPermission(permission);
+}
   loadPermissions(): void {
     this.permissionService.getAll(this.currentPage, this.pageSize).subscribe(page => {
       this.permissions = page.content;
@@ -56,7 +61,7 @@ export class PermissionsComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.newPermission = { id: 0, name: '', description: '' };
+    this.newPermission = { id: 0, nom: '', description: '' };
     this.isEditing = false;
   }
 

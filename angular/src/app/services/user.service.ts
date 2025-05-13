@@ -9,23 +9,27 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+  getAllPaginated(page: number, size: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}?page=${page}&size=${size}`, { withCredentials: true });
   }
 
   getById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${id}`);
+    return this.http.get<User>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 
   create(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, user);
+    return this.http.post<User>(this.apiUrl, user, { withCredentials: true });
   }
 
   update(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+    return this.http.put<User>(`${this.apiUrl}/${id}`, user, { withCredentials: true });
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true });
+  }
+
+  count(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count`, { withCredentials: true });
   }
 }

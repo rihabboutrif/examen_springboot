@@ -2,7 +2,7 @@ import { Permission } from "./permission.model";
 
 export interface Role {
     id: number;
-    name: string;
+    nom: string;
     description?: string;
     permissions: Permission[];
   }

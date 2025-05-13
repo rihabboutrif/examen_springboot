@@ -7,7 +7,7 @@ import { Role } from '../models/role.model';
   providedIn: 'root',
 })
 export class RoleService {
-  private apiUrl = 'http://localhost:8081/roles';
+  private apiUrl = 'http://localhost:8081/api/roles';
 
   constructor(private http: HttpClient) {}
 
@@ -20,6 +20,11 @@ export class RoleService {
   create(role: Role): Observable<Role> {
     return this.http.post<Role>(this.apiUrl, role);
   }
+
+
+  count() {
+  return this.http.get<number>('http://localhost:8081/api/roles/count');
+}
 
   // Mettre à jour un rôle existant
   update(id: number, role: Role): Observable<Role> {

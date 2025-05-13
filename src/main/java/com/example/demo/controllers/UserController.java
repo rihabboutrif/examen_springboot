@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.User;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired private UserService userService;
+        @Autowired private UserRepository userRepository;
+
 
     @GetMapping
     public Page<User> list(Pageable pageable) {
@@ -46,6 +49,12 @@ public User update(@PathVariable Long id, @RequestBody User user) {
 @DeleteMapping("/{id}")
 public void delete(@PathVariable Long id) {
     userService.deleteUser(id);
+}
+
+
+@GetMapping("/count")
+public long countUsers() {
+    return userRepository.countUsers();
 }
 
 }

@@ -9,6 +9,11 @@ export class PermissionService {
 
   constructor(private http: HttpClient) {}
 
+
+  count() {
+  return this.http.get<number>('http://localhost:8081/api/permissions/count');
+}
+
   getAll(page: number = 0, size: number = 5): Observable<any> {
     const params = new HttpParams()
       .set('page', page.toString())

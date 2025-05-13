@@ -12,7 +12,7 @@ import { NgFor } from '@angular/common';
   styleUrls: ['./historique.component.css']
 })
 export class HistoriqueComponent implements OnInit {
-  historiques: History[] = [];
+  historiques: any[] = [];
 
   constructor(private historiqueService: HistoriqueService) {}
 

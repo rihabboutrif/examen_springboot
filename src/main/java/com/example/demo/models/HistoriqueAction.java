@@ -8,11 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 @Entity
 @Data
-
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class HistoriqueAction {
     @Id @GeneratedValue
+    @EqualsAndHashCode.Include
     private Long id;
     private String action;
     private LocalDateTime date;

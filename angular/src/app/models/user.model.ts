@@ -3,9 +3,10 @@ import { Role } from "./role.model";
 
 export interface User {
     id: number;
-    username: string;
+    nom: string;
     email: string;
-    roles: Role[];
+    role: Role;
     permissions: Permission[];
+    actif:boolean
   }
   

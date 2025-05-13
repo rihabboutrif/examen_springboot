@@ -1,24 +1,31 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../services/auth.service'; // ajuste le chemin selon ton projet
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  standalone: true,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  imports: [FormsModule]
 })
+
 export class LoginComponent {
   email: string = '';
-  password: string = '';
+  motDePasse: string = '';
+  erreur: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin() {
-    // Basic Validation
-    if (this.email === 'admin@example.com' && this.password === 'password') {
-      this.router.navigate(['/dashboard']);
-    } else {
-      alert('Invalid credentials');
-    }
+  onSubmit(): void {
+    this.authService.login(this.email, this.motDePasse).subscribe({
+      next: (message) => {
+        console.log(message);
+        this.router.navigate(['/dashboard']); // redirige après login (ajuste la route si besoin)
+      },
+      error: (err) => {
+        this.erreur = err.error || 'Erreur lors de la connexion';
+      }
+    });
   }
 }

@@ -15,12 +15,14 @@ import com.example.demo.services.PermissionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.example.demo.models.User;
+import com.example.demo.repositories.PermissionRepository;
 
 
 @RestController
 @RequestMapping("/api/permissions")
 public class PermissionController {
     @Autowired private PermissionService permissionService;
+    @Autowired private PermissionRepository permissionRepository;
 
     @GetMapping
     public Page<Permission> list(Pageable pageable) {
@@ -41,4 +43,11 @@ public class PermissionController {
     public void delete(@PathVariable Long id, @AuthenticationPrincipal User admin) {
         permissionService.deletePermission(id, admin);
     }
+
+
+    @GetMapping("/count")
+public long countPermissions() {
+    return permissionRepository.countPermissions();
+}
+
 }

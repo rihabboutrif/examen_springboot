@@ -3,11 +3,11 @@
     <div class="card shadow-sm border-0 bg-gradient-primary text-white">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
-          <h5>Total Users</h5>
+          <h5>Total Utilisateurs</h5>
           <i class="fas fa-users fa-2x"></i>
         </div>
-        <h3 class="mt-3">1,234</h3>
-        <p class="mb-0">+10% from last month</p>
+        <h3 class="mt-3">{{ userCount }}</h3>
+        <p class="mb-0">Actifs uniquement</p>
       </div>
     </div>
   </div>
@@ -15,11 +15,11 @@
     <div class="card shadow-sm border-0 bg-gradient-success text-white">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
-          <h5>Total Sales</h5>
-          <i class="fas fa-dollar-sign fa-2x"></i>
+          <h5>Total Rôles</h5>
+          <i class="fas fa-user-shield fa-2x"></i>
         </div>
-        <h3 class="mt-3">$45,678</h3>
-        <p class="mb-0">+5% from last week</p>
+        <h3 class="mt-3">{{ roleCount }}</h3>
+        <p class="mb-0">Définis dans le système</p>
       </div>
     </div>
   </div>
@@ -27,11 +27,11 @@
     <div class="card shadow-sm border-0 bg-gradient-warning text-white">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
-          <h5>Active Tasks</h5>
-          <i class="fas fa-tasks fa-2x"></i>
+          <h5>Total Permissions</h5>
+          <i class="fas fa-lock fa-2x"></i>
         </div>
-        <h3 class="mt-3">76</h3>
-        <p class="mb-0">+15 tasks this week</p>
+        <h3 class="mt-3">{{ permissionCount }}</h3>
+        <p class="mb-0">Contrôles d'accès</p>
       </div>
     </div>
   </div>
@@ -39,65 +39,68 @@
     <div class="card shadow-sm border-0 bg-gradient-danger text-white">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
-          <h5>Alerts</h5>
-          <i class="fas fa-bell fa-2x"></i>
+          <h5>Actions Aujourd'hui</h5>
+          <i class="fas fa-history fa-2x"></i>
         </div>
-        <h3 class="mt-3">9</h3>
-        <p class="mb-0">Critical: 2</p>
+        <h3 class="mt-3">{{ todayActions }}</h3>
+        <p class="mb-0">Par tous les utilisateurs</p>
       </div>
     </div>
   </div>
-  </div>
-  
-  <div class="row mt-4">
-    <div class="col-md-6">
-      <div class="card shadow-sm">
-        <div class="card-header">Sales Overview</div>
-        <div class="card-body">
-            <apx-chart
-            [series]="chartSeries"
-            [chart]="chartOptions"
-            [xaxis]="xAxis">
-          </apx-chart>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card shadow-sm">
-        <div class="card-header">User Growth</div>
-        <div class="card-body">
-            <apx-chart
-            [series]="lineChart.series"
-            [chart]="chart"
-            [xaxis]="lineChart.xaxis">
-          </apx-chart>
-        </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header">Répartition des rôles</div>
+      <div class="card-body">
+        <apx-chart
+          [series]="roleChart.series"
+          [chart]="roleChart.chart"
+          [labels]="roleChart.labels"
+          [colors]="roleChart.colors"
+          [legend]="{ position: 'bottom' }">
+        </apx-chart>
       </div>
     </div>
   </div>
-  <div class="card mt-4 shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5>User Management</h5>
-      <input type="text" class="form-control w-25" placeholder="Search...">
+
+ <!-- <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header">Historique - 7 derniers jours</div>
+      <div class="card-body">
+        <apx-chart
+          [series]="historyChart.series"
+          [chart]="historyChart.chart"
+          [xaxis]="historyChart.xaxis"
+          [stroke]="{ curve: 'smooth' }">
+        </apx-chart>
+      </div>
     </div>
-    <div class="card-body">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users">
-            <td>{{ user.id }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.role }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  </div>-->
+</div>
+
+<div class="card mt-4 shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5>Historique récent</h5>
+    <input type="text" class="form-control w-25" placeholder="Rechercher une action...">
   </div>
+  <div class="card-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Utilisateur</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hist of historiques">
+          <td>{{ hist.date | date:'short' }}</td>
+          <td>{{ hist.utilisateur?.nom }}</td>
+          <td>{{ hist.action }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
